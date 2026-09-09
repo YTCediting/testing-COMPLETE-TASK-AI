@@ -1035,7 +1035,7 @@ render();
         let details = "AI backend returned an error.";
         try {
           const errData = await response.json();
-          details = errData.error || errData.details || details;
+          details = errData.details || errData.error || details;
         } catch (_) {}
         throw new Error(details);
       }
