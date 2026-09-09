@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f0eadf">
+<title>STUDY / TICKETS</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+:root{
+  --paper:#efe9df;
+  --paper2:#e8e1d6;
+  --black:#101010;
+  --crimson:#d91d45;
+  --crimson-dark:#ad1234;
+  --green:#158b4d;
+  --line:#171717;
+  --muted:#77736d;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--black);
+  font-family:"DM Sans",Arial,sans-serif;
+  overflow-x:hidden;
+}
+
+/* subtle paper grain */
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:99;
+  pointer-events:none;
+  opacity:.11;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+.wrap{
+  width:min(1180px,calc(100% - 42px));
+  margin:auto;
+}
+
+/* NAV */
+header{
+  padding:22px 0 18px;
+  border-bottom:2px solid var(--line);
+}
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.logo{
+  font-size:clamp(25px,4vw,43px);
+  font-weight:900;
+  letter-spacing:-2.8px;
+  line-height:.9;
+}
+.logo i{
+  color:var(--crimson);
+  font-style:normal;
+}
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.status{
+  font-size:10px;
+  letter-spacing:2px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.status-dot{
+  display:inline-block;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--green);
+  margin-right:7px;
+}
+.nav-btn{
+  border:2px solid var(--black);
+  border-radius:50px;
+  background:transparent;
+  padding:14px 22px;
+  font:900 11px "DM Sans";
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+/* HERO */
+.hero{
+  padding:80px 0 48px;
+  position:relative;
+}
+.kicker{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  margin-bottom:25px;
+}
+.kicker span{color:var(--crimson)}
+.hero h1{
+  margin:0;
+  max-width:1080px;
+  font-size:clamp(58px,11.5vw,145px);
+  line-height:.79;
+  letter-spacing:-8px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.hero h1 .accent{color:var(--crimson)}
+.hero h1 .outline{
+  color:transparent;
+  -webkit-text-stroke:2px var(--black);
+}
+.spark{
+  position:absolute;
+  right:1%;
+  top:120px;
+  font-size:100px;
+  line-height:1;
+  transform:rotate(12deg);
+  color:rgba(16,16,16,.12);
+  font-weight:900;
+}
+.intro{
+  max-width:690px;
+  font-size:19px;
+  line-height:1.55;
+  margin:42px 0 0;
+}
+.intro b{font-weight:900}
+
+/* PROGRESS */
+.progress-box{
+  margin:30px 0 72px;
+  border-top:2px solid var(--black);
+  border-bottom:2px solid var(--black);
+  padding:18px 0;
+  display:flex;
+  align-items:center;
+  gap:28px;
+}
+.progress-label{
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.progress-track{
+  flex:1;
+  height:12px;
+  background:#d6cfc5;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  width:0;
+  background:var(--crimson);
+  transition:width .35s cubic-bezier(.2,.8,.2,1);
+}
+.progress-percent{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-1px;
+  min-width:65px;
+  text-align:right;
+}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:2px solid var(--black);
+  border-bottom:2px solid var(--black);
+  margin-bottom:58px;
+}
+.stat{
+  padding:22px 18px;
+  border-right:1px solid #aaa49c;
+}
+.stat:last-child{border-right:0}
+.stat .number{
+  font-size:52px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-3px;
+}
+.stat .label{
+  margin-top:8px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#706c66;
+  text-transform:uppercase;
+}
+
+/* SECTION */
+.section-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:20px;
+  border-bottom:2px solid var(--black);
+  padding-bottom:12px;
+  margin-bottom:18px;
+}
+.section-head h2{
+  margin:0;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+.section-head small{
+  font-size:9px;
+  letter-spacing:1.5px;
+  font-weight:900;
+  color:#7a756e;
+}
+
+/* DAYS */
+.days{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+.day{
+  position:relative;
+  border:2px solid var(--black);
+  background:rgba(239,233,223,.65);
+  padding:17px;
+  overflow:hidden;
+  transition:.2s;
+}
+.day:hover{transform:translateY(-2px)}
+.day.complete{
+  background:#e3eee7;
+  border-color:#0f6f3d;
+}
+.day-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:13px;
+  margin-bottom:10px;
+  border-bottom:1px solid #a8a199;
+}
+.day-name{
+  font-size:29px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+}
+.day-count{
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1.4px;
+  color:#777;
+  text-transform:uppercase;
+}
+
+/* SUBJECT ROW + SLIDE / GLASS SWITCH */
+.tasks{display:grid;gap:4px}
+
+.task{
+  appearance:none;
+  border:0;
+  border-bottom:1px solid #bdb6ad;
+  background:transparent;
+  color:var(--black);
+  min-height:72px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  text-align:left;
+  padding:9px 2px;
+  cursor:pointer;
+  position:relative;
+  transition:transform .22s ease, border-color .22s ease;
+  font-family:inherit;
+}
+.task:last-child{border-bottom:0}
+.task:hover{transform:translateX(3px)}
+.task:active{transform:scale(.99)}
+
+.task-name{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:-.3px;
+}
+.task-state{
+  margin-left:auto;
+  margin-right:13px;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  color:#77736d;
+  text-transform:uppercase;
+  min-width:58px;
+  text-align:right;
+}
+
+/* Sliding switch */
+.liquid-switch{
+  width:112px;
+  height:43px;
+  flex:0 0 112px;
+  border:1.5px solid rgba(16,16,16,.48);
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  position:relative;
+  cursor:pointer;
+  overflow:visible;
+  box-shadow:
+    inset 0 1px 5px rgba(255,255,255,.5),
+    inset 0 -2px 5px rgba(16,16,16,.10),
+    0 2px 5px rgba(16,16,16,.08);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  transition:box-shadow .3s ease, transform .3s ease;
+}
+.liquid-switch .track{
+  position:absolute;
+  inset:4px;
+  border-radius:999px;
+  background:
+    linear-gradient(90deg,
+      rgba(217,29,69,.16) 0 31%,
+      rgba(16,16,16,.07) 31% 69%,
+      rgba(21,139,77,.16) 69% 100%);
+  border:1px solid rgba(16,16,16,.08);
+}
+.liquid-switch .blob{
+  position:absolute;
+  top:5px;
+  left:calc(50% - 16px);
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:
+    0 4px 9px rgba(16,16,16,.20),
+    inset 0 1px 2px rgba(255,255,255,.95);
+  transition:
+    left .42s cubic-bezier(.16,1.3,.28,1),
+    transform .42s cubic-bezier(.16,1.3,.28,1),
+    background .25s ease,
+    box-shadow .25s ease;
+}
+.liquid-switch .blob:after{
+  content:"";
+  position:absolute;
+  width:15px;height:9px;
+  left:8px;top:6px;
+  border-radius:50%;
+  background:rgba(255,255,255,.65);
+  filter:blur(3px);
+  transform:rotate(-18deg);
+}
+
+/* pending = left, neutral = center, done = right */
+.liquid-switch[data-state="pending"] .blob{
+  left:5px;
+  background:rgba(217,29,69,.82);
+  border-color:rgba(255,255,255,.75);
+  box-shadow:
+    0 7px 15px rgba(217,29,69,.28),
+    0 2px 5px rgba(16,16,16,.22),
+    inset 0 1px 3px rgba(255,255,255,.55);
+  transform:scale(1.08, .94);
+}
+.liquid-switch[data-state="done"] .blob{
+  left:73px;
+  background:rgba(21,139,77,.82);
+  border-color:rgba(255,255,255,.75);
+  box-shadow:
+    0 7px 15px rgba(21,139,77,.28),
+    0 2px 5px rgba(16,16,16,.22),
+    inset 0 1px 3px rgba(255,255,255,.55);
+  transform:scale(1.08, .94);
+}
+.liquid-switch[data-state="neutral"] .blob{
+  left:calc(50% - 16px);
+  background:rgba(255,255,255,.82);
+}
+
+.liquid-switch:active{
+  transform:scaleY(.94);
+}
+.liquid-switch:active .blob{
+  transform:scaleX(1.28) scaleY(.82);
+}
+
+/* When a subject has a selected state, make the glass control feel lifted. */
+.task:has(.liquid-switch[data-state="pending"]),
+.task:has(.liquid-switch[data-state="done"]){
+  border-bottom-color:rgba(16,16,16,.22);
+}
+.task:has(.liquid-switch[data-state="pending"]) .liquid-switch,
+.task:has(.liquid-switch[data-state="done"]) .liquid-switch{
+  transform:translateY(-2px);
+}
+
+/* Keep the surrounding design monochrome; status colors live only inside switches. */
+.accent,.kicker span{color:var(--black)!important}
+.quote h3 span{color:var(--black)}
+.progress-fill{background:var(--black)}
+.status-dot{background:var(--black);box-shadow:none}
+
+/* bottom controls */
+.controls{
+  display:flex;
+  gap:10px;
+  margin:18px 0 72px;
+}
+.control{
+  border:2px solid var(--black);
+  background:var(--black);
+  color:var(--paper);
+  border-radius:40px;
+  padding:13px 19px;
+  font:900 10px "DM Sans";
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.control.alt{
+  background:transparent;
+  color:var(--black);
+}
+
+/* quote */
+.quote{
+  position:relative;
+  padding:60px 0 80px;
+  border-top:2px solid var(--black);
+}
+.quote-mark{
+  position:absolute;
+  right:0;
+  top:25px;
+  font-size:90px;
+  font-weight:900;
+  color:rgba(16,16,16,.12);
+}
+.quote h3{
+  max-width:900px;
+  margin:0;
+  font-size:clamp(35px,6vw,72px);
+  line-height:.9;
+  letter-spacing:-4px;
+  text-transform:uppercase;
+}
+.quote h3 span{color:var(--crimson)}
+footer{
+  border-top:2px solid var(--black);
+  padding:20px 0 35px;
+  font-size:9px;
+  letter-spacing:2px;
+  font-weight:900;
+  color:#77736d;
+  text-transform:uppercase;
+}
+
+@media(max-width:700px){
+  .wrap{width:calc(100% - 24px)}
+  header{padding:16px 0}
+  .nav-right .status{display:none}
+  .nav-btn{padding:12px 17px}
+  .hero{padding:52px 0 35px}
+  .hero h1{letter-spacing:-4px}
+  .spark{font-size:65px;top:75px;right:0}
+  .intro{font-size:16px;margin-top:30px}
+  .progress-box{gap:13px;margin-bottom:50px}
+  .progress-label{font-size:9px}
+  .progress-percent{font-size:21px;min-width:48px}
+  .stats{margin-bottom:48px}
+  .stat{padding:17px 10px}
+  .stat .number{font-size:38px}
+  .stat .label{font-size:8px;letter-spacing:1.2px}
+  .days{grid-template-columns:1fr}
+  .day-name{font-size:26px}
+  .task{min-height:64px}
+  .task-name{font-size:16px}
+  .task-state{margin-right:9px;font-size:7px;min-width:50px}
+  .liquid-switch{width:94px;flex-basis:94px;height:36px}
+  .liquid-switch .blob{width:27px;height:27px;top:3.5px;left:calc(50% - 13.5px)}
+  .liquid-switch[data-state="pending"] .blob{left:4px}
+  .liquid-switch[data-state="done"] .blob{left:61px}
+  .liquid-switch .blob:after{width:12px;height:8px;left:7px;top:5px}
+  .quote h3{letter-spacing:-2px}
+}
+
+/* GOOGLE SEARCH */
+.search-wrap{
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1.5px solid var(--black);
+  border-radius:999px;
+  padding:5px 6px 5px 16px;
+  background:rgba(255,255,255,.22);
+  box-shadow:inset 0 1px 5px rgba(255,255,255,.45);
+}
+.search-icon{
+  font-size:16px;
+  font-weight:900;
+  line-height:1;
+}
+.search-input{
+  flex:1;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--black);
+  font:500 14px "DM Sans",Arial,sans-serif;
+}
+.search-input::placeholder{color:#77736d}
+.search-button{
+  border:1.5px solid var(--black);
+  background:var(--black);
+  color:var(--paper);
+  border-radius:999px;
+  padding:11px 17px;
+  font:900 9px "DM Sans";
+  letter-spacing:1.3px;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.search-button:hover{transform:translateY(-1px)}
+
+
+/* SUBJECT MANAGEMENT */
+.add-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding-top:10px;
+}
+.add-subject{
+  border:1.5px dashed #8c877f;
+  background:transparent;
+  color:#77736d;
+  min-height:42px;
+  width:100%;
+  cursor:pointer;
+  font:900 10px "DM Sans";
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  transition:.2s;
+}
+.add-subject:hover{
+  border-color:var(--black);
+  color:var(--black);
+  background:rgba(255,255,255,.18);
+}
+.manage-tools{
+  display:none;
+  align-items:center;
+  gap:6px;
+  margin-left:10px;
+}
+.task:hover .manage-tools{display:flex}
+.manage-btn{
+  border:1px solid #8d8880;
+  background:rgba(255,255,255,.25);
+  color:#55514b;
+  width:28px;height:28px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font:900 11px "DM Sans";
+  cursor:pointer;
+}
+.manage-btn:hover{
+  background:var(--black);
+  color:var(--paper);
+  border-color:var(--black);
+}
+.task-main{
+  display:flex;
+  align-items:center;
+  flex:1;
+  min-width:0;
+}
+@media(max-width:700px){
+  .search-wrap{margin-top:12px;padding-left:13px}
+  .search-button{padding:10px 13px}
+  .search-input{font-size:13px}
+  .manage-tools{display:flex;margin-left:5px}
+  .manage-btn{width:25px;height:25px;font-size:10px}
+  .add-subject{min-height:40px}
+}
+
+
+/* AI MODEL / ATTACHMENT PANEL */
+.ai-panel{
+  margin:18px 0 72px;
+  border:2px solid var(--black);
+  background:rgba(239,233,223,.72);
+  padding:18px;
+}
+.ai-panel-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+  border-bottom:1px solid #aaa49c;padding-bottom:12px;margin-bottom:14px;
+}
+.ai-panel-title{
+  font-size:14px;font-weight:900;letter-spacing:3px;text-transform:uppercase;
+}
+.ai-panel-note{
+  font-size:9px;font-weight:900;letter-spacing:1.3px;color:#77736d;text-transform:uppercase;
+}
+.ai-chat{
+  border:1.5px solid var(--black);background:rgba(255,255,255,.2);
+  min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:16px;margin-bottom:12px;
+}
+.ai-empty{
+  font-size:12px;font-weight:700;color:#77736d;line-height:1.5;
+}
+.ai-input-row{display:flex;gap:8px;align-items:center}
+.ai-input{
+  flex:1;min-width:0;border:1.5px solid var(--black);outline:0;
+  background:rgba(255,255,255,.25);padding:13px 14px;
+  font:500 13px "DM Sans";color:var(--black);
+}
+.ai-input::placeholder{color:#77736d}
+.ai-icon-btn,.ai-send{
+  border:1.5px solid var(--black);background:var(--black);color:var(--paper);
+  min-width:44px;height:44px;cursor:pointer;font:900 12px "DM Sans";
+}
+.ai-icon-btn{background:transparent;color:var(--black)}
+.ai-tools{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;
+}
+.ai-tool{
+  border:1.5px solid var(--black);background:transparent;color:var(--black);
+  padding:9px 12px;cursor:pointer;font:900 9px "DM Sans";
+  letter-spacing:1.2px;text-transform:uppercase;
+}
+.ai-model-row{
+  display:flex;gap:10px;align-items:center;margin-top:12px;
+  padding-top:12px;border-top:1px solid #aaa49c;
+}
+.ai-model-label{
+  font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;
+}
+.ai-model-select{
+  flex:1;max-width:360px;border:1.5px solid var(--black);background:transparent;
+  color:var(--black);padding:10px;font:900 10px "DM Sans";text-transform:uppercase;
+}
+.ai-key-status{
+  margin-left:auto;font-size:8px;font-weight:900;letter-spacing:1.2px;
+  color:#77736d;text-transform:uppercase;
+}
+.ai-file-list{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.ai-file{
+  border:1px solid #8c877f;padding:6px 9px;font-size:9px;font-weight:900;
+}
+@media(max-width:700px){
+  .ai-panel{padding:13px;margin-bottom:50px}
+  .ai-panel-head{align-items:flex-start;flex-direction:column;gap:6px}
+  .ai-input-row{align-items:stretch}
+  .ai-model-row{align-items:flex-start;flex-direction:column}
+  .ai-model-select{max-width:none;width:100%}
+  .ai-key-status{margin-left:0}
+}
+
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<header>
+  <div class="nav">
+    <div class="logo">STUDY<span>//</span>TICKETS.</div>
+    <div class="nav-right">
+      <div class="status"><span class="status-dot"></span>Progress saved</div>
+      <button class="nav-btn" onclick="window.scrollTo({top:document.querySelector('#subjects').offsetTop-20,behavior:'smooth'})">LET'S STUDY ↘</button>
+    </div>
+  </div>
+</header>
+
+<div class="search-wrap" aria-label="Google search">
+  <span class="search-icon">⌕</span>
+  <form id="googleSearch" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
+    <input class="search-input" id="searchInput" type="search" placeholder="Search Google..." autocomplete="off">
+    <button class="search-button" type="submit">SEARCH ↗</button>
+  </form>
+</div>
+
+<main>
+<section class="hero">
+  <div class="kicker">✦ PERSONAL STUDY BOARD <span>/ 2026</span></div>
+  <div class="spark">✕</div>
+  <h1>MAKE<br>YOUR<br>SYLLABUS<br>COMLETE.</h1>
+  <p class="intro">Every unfinished task takes up space.
+ <b>tickets</b>. Complete it, clear it, move forward. One task at a time. No excuses.</p>
+</section>
+
+<section class="progress-box">
+  <div class="progress-label">Overall progress</div>
+  <div class="progress-track"><div class="progress-fill" id="bar"></div></div>
+  <div class="progress-percent" id="percent">0%</div>
+</section>
+
+<section class="stats">
+  <div class="stat"><div class="number" id="total">0</div><div class="label">Total tickets</div></div>
+  <div class="stat"><div class="number" id="completed">0</div><div class="label">Completed</div></div>
+  <div class="stat"><div class="number" id="left">0</div><div class="label">Still pending</div></div>
+</section>
+
+<section id="subjects">
+  <div class="section-head">
+    <h2>THIS WEEK / YOUR WORK</h2>
+    <small>RED → PENDING / GREEN → DONE</small>
+  </div>
+  <div class="days" id="days"></div>
+
+  <div class="controls">
+    <button class="control" onclick="resetAll()">Reset tickets</button>
+    <button class="control alt" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top ↑</button>
+  </div>
+</section>
+
+
+<section class="ai-panel" id="ai-panel">
+  <div class="ai-panel-head">
+    <div class="ai-panel-title">AI / MODEL CONNECT</div>
+    <div class="ai-panel-note">PRIVATE CONFIG • NO API KEY IN THIS FILE</div>
+  </div>
+
+  <div class="ai-chat" id="aiChat">
+    <div class="ai-empty" id="aiEmpty">
+      Connect a model in the secure backend, then chat here. Attach images or PDFs when supported by your connected model.
+    </div>
+  </div>
+
+  <div class="ai-input-row">
+    <button class="ai-icon-btn" type="button" id="imageBtn" title="Attach image">＋</button>
+    <input class="ai-input" id="aiInput" type="text"
+           placeholder="Ask your connected model anything..." autocomplete="off">
+    <button class="ai-send" type="button" id="aiSend">↑</button>
+  </div>
+
+  <div class="ai-tools">
+    <button class="ai-tool" type="button" id="attachImage">IMAGE</button>
+    <button class="ai-tool" type="button" id="attachPdf">PDF</button>
+    <button class="ai-tool" type="button" id="clearChat">CLEAR</button>
+  </div>
+
+  <input id="imageInput" type="file" accept="image/*" hidden>
+  <input id="pdfInput" type="file" accept="application/pdf,.pdf" hidden>
+  <div class="ai-file-list" id="aiFiles"></div>
+
+  <div class="ai-model-row">
+    <div class="ai-model-label">MODEL</div>
+    <select class="ai-model-select" id="modelSelect">
+      <option value="openai/gpt-5.3-codex-spark">GPT-5.3 SPARK</option>
+    </select>
+    <div class="ai-key-status">KEY STORED SERVER-SIDE</div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="quote-mark">✕</div>
+  <h3>COMPLETE.<br><span>INCOMPLETE </span><br>THINGS TO WORRY ABOUT.</h3>
+</section>
+</main>
+
+<footer>
+  <span class="status-dot"></span>
+  AUTO-SAVED IN THIS BROWSER • CLOSE IT • COME BACK • YOUR TICKETS STAY
+</footer>
+</div>
+
+<script>
+const STORAGE_KEY = "study_tickets_v2";
+const SCHEDULE_KEY = "study_schedule_v2";
+
+const defaultSchedule = [
+  ["MON", ["SUB.","SUB.","SUB."]],
+  ["TUE", ["SUB.","SUB.","SUB."]],
+  ["WED", ["SUB.","SUB.","SUB."]],
+  ["THU", ["SUB.","SUB.","SUB."]],
+  ["FRI", ["SUB.","SUB.","SUB."]],
+  ["SAT", ["SUB.","SUB.","SUB.","SUB."]],
+  ["SUN", ["SUB.","SUB.","SUB.","SUB."]]
+];
+
+let schedule = JSON.parse(localStorage.getItem(SCHEDULE_KEY) || "null") || defaultSchedule;
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+const makeId = (day,index) => day + "_" + index;
+
+function saveSchedule(){
+  localStorage.setItem(SCHEDULE_KEY, JSON.stringify(schedule));
+}
+
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function render(){
+  const root = document.getElementById("days");
+  root.innerHTML = "";
+
+  let total = 0, completed = 0;
+
+  schedule.forEach(([day, subjects], dayIndex)=>{
+    const card = document.createElement("article");
+    card.className = "day";
+
+    const doneCount = subjects.reduce((n,_,i)=>n + (state[makeId(day,i)] === "done" ? 1 : 0),0);
+    const allDone = doneCount === subjects.length;
+
+    if(allDone) card.classList.add("complete");
+
+    card.innerHTML = `
+      <div class="day-head">
+        <div class="day-name">${day}</div>
+        <div class="day-count">${doneCount}/${subjects.length} DONE</div>
+      </div>
+      <div class="tasks"></div>
+    `;
+
+    const tasks = card.querySelector(".tasks");
+
+    subjects.forEach((subject,index)=>{
+      total++;
+      const key = makeId(day,index);
+      const value = state[key] || "neutral";
+      const isDone = value === "done";
+
+      const button = document.createElement("button");
+      button.className = "task";
+      button.setAttribute("type","button");
+      button.setAttribute("aria-label", `${day} ${subject}`);
+
+      const stateText =
+        value === "done" ? "DONE" :
+        value === "pending" ? "PENDING" : "NEUTRAL";
+
+      button.innerHTML = `
+        <span class="task-main">
+          <span class="task-name">${escapeHtml(subject)}</span>
+        </span>
+        <span class="task-state">${stateText}</span>
+        <span class="liquid-switch" data-state="${value}" role="slider" aria-valuemin="-1" aria-valuemax="1" aria-valuenow="${value === "pending" ? -1 : value === "done" ? 1 : 0}" tabindex="0">
+          <span class="track"></span>
+          <span class="blob"></span>
+        </span>
+        <span class="manage-tools">
+          <span class="manage-btn rename-btn" title="Rename subject">✎</span>
+          <span class="manage-btn delete-btn" title="Delete subject">×</span>
+        </span>
+      `;
+
+      const sw = button.querySelector(".liquid-switch");
+
+      function setStateFromX(clientX){
+        const rect = sw.getBoundingClientRect();
+        const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+        let next = "neutral";
+        if(x < rect.width * .33) next = "pending";
+        else if(x > rect.width * .67) next = "done";
+        state[key] = next;
+        save();
+        render();
+      }
+
+      sw.addEventListener("click",(e)=>{
+        e.stopPropagation();
+        setStateFromX(e.clientX);
+      });
+
+      sw.addEventListener("keydown",(e)=>{
+        if(e.key === "ArrowLeft"){ e.preventDefault(); state[key]="pending"; save(); render(); }
+        if(e.key === "ArrowRight"){ e.preventDefault(); state[key]="done"; save(); render(); }
+        if(e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === " "){
+          e.preventDefault(); state[key]="neutral"; save(); render();
+        }
+      });
+
+      button.addEventListener("click",(e)=>{
+        if(e.target.closest(".liquid-switch") || e.target.closest(".manage-tools")) return;
+        setStateFromX(e.clientX);
+      });
+
+      button.querySelector(".rename-btn").addEventListener("click",(e)=>{
+        e.stopPropagation();
+        const next = prompt("Rename this subject:", subject);
+        if(next !== null && next.trim()){
+          schedule[dayIndex][1][index] = next.trim();
+          saveSchedule();
+          render();
+        }
+      });
+
+      button.querySelector(".delete-btn").addEventListener("click",(e)=>{
+        e.stopPropagation();
+        if(confirm(`Delete "${subject}" from ${day}?`)){
+          subjects.splice(index,1);
+          delete state[key];
+          save();
+          saveSchedule();
+          render();
+        }
+      });
+
+      tasks.appendChild(button);
+    });
+
+    const add = document.createElement("button");
+    add.className = "add-subject";
+    add.type = "button";
+    add.innerHTML = "+ ADD SUBJECT";
+    add.onclick = ()=>{
+      const name = prompt(`Add a subject to ${day}:`);
+      if(name !== null && name.trim()){
+        subjects.push(name.trim());
+        saveSchedule();
+        render();
+      }
+    };
+    tasks.appendChild(add);
+
+    root.appendChild(card);
+  });
+
+  const pending = total - completed;
+  const percent = total ? Math.round((completed/total)*100) : 0;
+
+  document.getElementById("total").textContent = total;
+  document.getElementById("completed").textContent = completed;
+  document.getElementById("left").textContent = pending;
+  document.getElementById("percent").textContent = percent + "%";
+  document.getElementById("bar").style.width = percent + "%";
+}
+
+function resetAll(){
+  if(confirm("Saare tickets ko wapas RED / PENDING karna hai?")){
+    state = {};
+    schedule = JSON.parse(JSON.stringify(defaultSchedule));
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(SCHEDULE_KEY);
+    render();
+  }
+}
+
+document.getElementById("googleSearch").addEventListener("submit", function(e){
+  e.preventDefault();
+  const q = document.getElementById("searchInput").value.trim();
+  if(q) window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(q);
+});
+
+render();
+
+/* AI PANEL — frontend only.
+   IMPORTANT: Never put an OpenAI/API secret in this HTML.
+   POST /api/chat is expected to be implemented on your server.
+*/
+(() => {
+  const input = document.getElementById("aiInput");
+  const send = document.getElementById("aiSend");
+  const chat = document.getElementById("aiChat");
+  const empty = document.getElementById("aiEmpty");
+  const modelSelect = document.getElementById("modelSelect");
+  const imageInput = document.getElementById("imageInput");
+  const pdfInput = document.getElementById("pdfInput");
+  const files = document.getElementById("aiFiles");
+
+  function addFile(file){
+    if(!file) return;
+    const tag = document.createElement("span");
+    tag.className = "ai-file";
+    tag.textContent = file.name;
+    files.appendChild(tag);
+  }
+
+  function addMessage(role, text){
+    if(empty) empty.remove();
+    const msg = document.createElement("div");
+    msg.style.cssText = "padding:9px 0;border-top:1px solid #aaa49c;font-size:13px;line-height:1.5;";
+    msg.innerHTML = "<b>" + (role === "user" ? "YOU" : "AI") + "</b><br>" +
+      escapeHtml(text);
+    chat.appendChild(msg);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function escapeHtml(v){
+    return String(v).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+  }
+
+  async function submit(){
+    const text = input.value.trim();
+    if(!text) return;
+    addMessage("user", text);
+    input.value = "";
+
+    try{
+      const response = await fetch("/api/chat", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          model:modelSelect.value,
+          message:text
+        })
+      });
+
+      if(!response.ok){
+        let details = "AI backend returned an error.";
+        try {
+          const errData = await response.json();
+          details = errData.error || errData.details || details;
+        } catch (_) {}
+        throw new Error(details);
+      }
+      const data = await response.json();
+      addMessage("assistant", data.output || data.message || "No response.");
+    }catch(err){
+      addMessage("assistant", err.message || "Could not connect to the AI backend.");
+    }
+  }
+
+  send.addEventListener("click", submit);
+  input.addEventListener("keydown", e => {
+    if(e.key === "Enter") submit();
+  });
+
+  document.getElementById("imageBtn").onclick = () => imageInput.click();
+  document.getElementById("attachImage").onclick = () => imageInput.click();
+  document.getElementById("attachPdf").onclick = () => pdfInput.click();
+
+  imageInput.addEventListener("change", e => addFile(e.target.files[0]));
+  pdfInput.addEventListener("change", e => addFile(e.target.files[0]));
+
+  document.getElementById("clearChat").onclick = () => {
+    chat.innerHTML = '<div class="ai-empty" id="aiEmpty">Chat cleared. Your model connection remains unchanged.</div>';
+    files.innerHTML = "";
+  };
+})();
+
+</script>
+</body>
+</html>
