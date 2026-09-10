@@ -832,9 +832,14 @@ function render(){
     const card = document.createElement("article");
     card.className = "day";
 
-    const doneCount = subjects.reduce((n,_,i)=>n + (state[makeId(day,i)] === "done" ? 1 : 0),0);
-    const allDone = doneCount === subjects.length;
+    const doneCount = subjects.reduce(
+  (n,_,i) => n + (state[makeId(day,i)] === "done" ? 1 : 0),
+  0
+);
 
+completed += doneCount;
+
+const allDone = doneCount === subjects.length;
     if(allDone) card.classList.add("complete");
 
     card.innerHTML = `
