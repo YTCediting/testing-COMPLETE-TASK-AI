@@ -1241,14 +1241,14 @@ footer{
     <button class="ai-tool" type="button" id="clearChat">CLEAR</button>
   </div>
 
-  <input id="imageInput" type="file" accept="image/*" hidden>
+  <input id="imageInput" type="file" accept="image/*" capture="environment" hidden>
   <input id="pdfInput" type="file" accept="application/pdf,.pdf" hidden>
   <div class="ai-file-list" id="aiFiles"></div>
 
   <div class="ai-model-row">
     <div class="ai-model-label">MODEL</div>
- <select class="ai-model-select" id="modelSelect">
-  <option value="google/gemma-4-26b-a4b-it:free">GEMMA 4 26B A4B</option>
+  <select class="ai-model-select" id="modelSelect">
+  <option value="google/gemma-4-26b-a4b-it:free">GEMMA 4 26B</option>
 </select>
     <div class="ai-key-status">KEY STORED SERVER-SIDE</div>
   </div>
@@ -1865,17 +1865,74 @@ render();
   const imageInput = document.getElementById("imageInput");
   const pdfInput = document.getElementById("pdfInput");
   const files = document.getElementById("aiFiles");
+  const selectedFiles = [];
 
   if(!input || !send || !chat || !modelSelect) return;
 
-  function addFile(file){
+  function fileToDataURL(file){
+    return new Promise((resolve,reject)=>{
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error("Could not read " + file.name));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function prepareAttachment(file){
+    if(!file) return null;
+
+    if(file.size > 3 * 1024 * 1024){
+      throw new Error(file.name + " is larger than 3 MB.");
+    }
+
+    if(file.type.startsWith("image/") || file.type === "application/pdf"){
+      return {
+        name:file.name,
+        type:file.type,
+        data:await fileToDataURL(file)
+      };
+    }
+
+    return null;
+  }
+
+  function renderFiles(){
+    files.innerHTML = "";
+
+    selectedFiles.forEach((item,index)=>{
+      const tag = document.createElement("span");
+      tag.className = "ai-file";
+      tag.textContent = item.file.name;
+      tag.title = "Remove " + item.file.name;
+      tag.style.cursor = "pointer";
+      tag.onclick = ()=>{
+        selectedFiles.splice(index,1);
+        renderFiles();
+      };
+      files.appendChild(tag);
+    });
+  }
+
+  async function addFile(file){
     if(!file) return;
 
-    const tag = document.createElement("span");
-    tag.className = "ai-file";
-    tag.textContent = file.name;
+    if(selectedFiles.length >= 5){
+      addMessage("assistant","You can attach up to 5 files per message.");
+      return;
+    }
 
-    files.appendChild(tag);
+    try{
+      const prepared = await prepareAttachment(file);
+      if(!prepared){
+        addMessage("assistant","Only images and PDFs are supported here.");
+        return;
+      }
+
+      selectedFiles.push({file,prepared});
+      renderFiles();
+    }catch(err){
+      addMessage("assistant",err.message || "Could not attach the file.");
+    }
   }
 
   function addMessage(role,text){
@@ -1897,9 +1954,14 @@ render();
   async function submit(){
     const text = input.value.trim();
 
-    if(!text) return;
+    if(!text && selectedFiles.length === 0) return;
 
-    addMessage("user",text);
+    const attachments = selectedFiles.map(item => item.prepared);
+    const attachmentNames = selectedFiles.map(item => item.file.name);
+    addMessage(
+      "user",
+      text + (attachmentNames.length ? "\n[Attached: " + attachmentNames.join(", ") + "]" : "")
+    );
     input.value = "";
     send.disabled = true;
 
@@ -1911,7 +1973,8 @@ render();
         },
         body:JSON.stringify({
           model:modelSelect.value,
-          message:text
+          message:text,
+          attachments
         })
       });
 
@@ -1939,6 +2002,8 @@ render();
         err.message || "Could not connect to the AI backend."
       );
     }finally{
+      selectedFiles.length = 0;
+      renderFiles();
       send.disabled = false;
       input.focus();
     }
@@ -1964,16 +2029,19 @@ render();
 
   imageInput.addEventListener("change",e=>{
     addFile(e.target.files[0]);
+    e.target.value = "";
   });
 
   pdfInput.addEventListener("change",e=>{
     addFile(e.target.files[0]);
+    e.target.value = "";
   });
 
   document.getElementById("clearChat").onclick = ()=>{
     chat.innerHTML =
       '<div class="ai-empty" id="aiEmpty">Chat cleared. Your model connection remains unchanged.</div>';
 
+    selectedFiles.length = 0;
     files.innerHTML = "";
   };
 })();
