@@ -1241,7 +1241,7 @@ footer{
     <button class="ai-tool" type="button" id="clearChat">CLEAR</button>
   </div>
 
-  <input id="imageInput" type="file" accept="image/*" capture="environment" hidden>
+  <input id="imageInput" type="file" accept="image/*" hidden>
   <input id="pdfInput" type="file" accept="application/pdf,.pdf" hidden>
   <div class="ai-file-list" id="aiFiles"></div>
 
@@ -1249,6 +1249,7 @@ footer{
     <div class="ai-model-label">MODEL</div>
   <select class="ai-model-select" id="modelSelect">
   <option value="google/gemma-4-26b-a4b-it:free">GEMMA 4 26B</option>
+  <option value="gemini-3.8-flash">GEMINI 3.8 FLASH</option>
 </select>
     <div class="ai-key-status">KEY STORED SERVER-SIDE</div>
   </div>
@@ -1851,10 +1852,10 @@ render();
 
 /* =========================================================
    AI PANEL
-   EXACT SAME SERVER CONNECTION:
+   SERVER CONNECTION:
    /api/chat
-   model: deepseek/deepseek-v4-pro
-   API key stays server-side.
+   Supports OpenRouter models + direct Gemini API.
+   API keys stay server-side.
    ========================================================= */
 (() => {
   const input = document.getElementById("aiInput");
